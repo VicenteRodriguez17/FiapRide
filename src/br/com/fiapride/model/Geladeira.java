@@ -2,64 +2,101 @@ package br.com.fiapride.model;
 
 public class Geladeira {
 
-    public String formato;
-    public String aparencia;
-    public int capacidadeTotalEmMl; 
-    public int volumeOcupadoEmMl; 
+    private String modelo;
+    private String cor;
+    private int capacidadeMaxima;
+    private int volumeAtual;
 
-    public Geladeira(String formato, String aparencia, int capacidadeTotalEmMl) {
-        this.formato = formato;
-        this.aparencia = aparencia;
-        
-        if (capacidadeTotalEmMl <= 0) {
-            System.out.println("Erro: A capacidade total da geladeira deve ser um valor positivo.");
-            this.capacidadeTotalEmMl = 1; 
+    // CONSTRUTOR
+    public Geladeira(String modelo, String cor, int capacidadeMaxima) {
+        this.setModelo(modelo);
+        this.setCor(cor);
+        this.setCapacidadeMaxima(capacidadeMaxima);
+        this.volumeAtual = 0;
+    }
+
+    // GET MODELO
+    public String getModelo() {
+        return this.modelo;
+    }
+
+    // SET MODELO
+    private void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    // GET COR
+    public String getCor() {
+        return this.cor;
+    }
+
+    // SET COR
+    private void setCor(String cor) {
+        this.cor = cor;
+    }
+
+    // GET CAPACIDADE
+    public int getCapacidadeMaxima() {
+        return this.capacidadeMaxima;
+    }
+
+    // REGRA DE NEGÓCIO
+    public void setCapacidadeMaxima(int capacidadeMaxima) {
+
+        if (capacidadeMaxima > 0) {
+            this.capacidadeMaxima = capacidadeMaxima;
         } else {
-            this.capacidadeTotalEmMl = capacidadeTotalEmMl;
+            System.out.println("Erro: capacidade inválida!");
         }
-        this.volumeOcupadoEmMl = 0; 
     }
 
+    // GET VOLUME
+    public int getVolumeAtual() {
+        return this.volumeAtual;
+    }
+
+    // ADICIONAR VOLUME
     public void adicionarVolume(int volume) {
-    	
+
         if (volume <= 0) {
-            System.out.println("Erro: O volume a ser adicionado deve ser um valor positivo.");
+            System.out.println("Volume inválido!");
             return;
         }
-        
-        if (this.volumeOcupadoEmMl + volume > this.capacidadeTotalEmMl) {
-            System.out.println("Erro: Capacidade máxima da geladeira excedida. Espaço disponível: " + (this.capacidadeTotalEmMl - this.volumeOcupadoEmMl) + "ml.");
-            return;
+
+        if (volumeAtual + volume > capacidadeMaxima) {
+            System.out.println("Não cabe na geladeira!");
+        } else {
+            volumeAtual += volume;
         }
-        this.volumeOcupadoEmMl += volume;
-        System.out.println("Volume de " + volume + "ml adicionado. Volume ocupado atual: " + this.volumeOcupadoEmMl + "ml.");
     }
 
+    // REMOVER VOLUME
     public void removerVolume(int volume) {
+
         if (volume <= 0) {
-            System.out.println("Erro: O volume a ser removido deve ser um valor positivo.");
+            System.out.println("Volume inválido!");
             return;
         }
-        if (this.volumeOcupadoEmMl - volume < 0) {
-            System.out.println("Erro: Não é possível remover mais volume do que o ocupado. Volume ocupado atual: " + this.volumeOcupadoEmMl + "ml.");
-            return;
+
+        if (volume > volumeAtual) {
+            System.out.println("Não há esse volume para remover!");
+        } else {
+            volumeAtual -= volume;
         }
-        this.volumeOcupadoEmMl -= volume;
-        System.out.println("Volume de " + volume + "ml removido. Volume ocupado atual: " + this.volumeOcupadoEmMl + "ml.");
     }
 
+    // ESPAÇO DISPONÍVEL
     public int verificarEspacoDisponivel() {
-        return this.capacidadeTotalEmMl - this.volumeOcupadoEmMl;
+        return capacidadeMaxima - volumeAtual;
     }
 
+    // STATUS
     public void exibirStatus() {
-        System.out.println("\n--- Status da Geladeira ---");
-        System.out.println("Formato: " + this.formato);
-        System.out.println("Aparência: " + this.aparencia);
-        System.out.println("Capacidade Total: " + this.capacidadeTotalEmMl + "ml");
-        System.out.println("Volume Ocupado: " + this.volumeOcupadoEmMl + "ml");
+
+        System.out.println("\nModelo: " + modelo);
+        System.out.println("Cor: " + cor);
+        System.out.println("Capacidade Máxima: " + capacidadeMaxima + "ml");
+        System.out.println("Volume Atual: " + volumeAtual + "ml");
         System.out.println("Espaço Disponível: " + verificarEspacoDisponivel() + "ml");
-        System.out.println("---------------------------");
     }
 }
-
